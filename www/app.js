@@ -4,9 +4,16 @@ const {
 } = MaterialUI;
 
 function App() {
+  // 현재 접속한 URL을 기반으로 WebSocket URL 자동 생성
+  const getDefaultWebsocketUrl = () => {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.host;
+    return `${protocol}//${host}/audio`;
+  };
+
   const [isRecording, setIsRecording] = useState(false);
   const [transcriptions, setTranscriptions] = useState([]);
-  const [websocketUrl, setWebsocketUrl] = useState('wss://YOUR_NGROK_URL/audio');
+  const [websocketUrl, setWebsocketUrl] = useState(getDefaultWebsocketUrl());
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const socketRef = useRef(null);
